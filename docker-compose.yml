@@ -1,6 +1,9 @@
 version: '3.7'
 services:
   php:
+    volumes:
+      - .:/var/www/html
+      - $HOME/.composer/cache:/root/.composer/cache
     build:
       context: .
       dockerfile: docker/build/php/Dockerfile
