@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Hello!!!</h1>
+	<h1>{% if name %}Last CSV file on FTP: {{ name }}{% else %}File not found!{% endif %}</h1>
+	{{ csv|nl2br }}
 {% endblock %}

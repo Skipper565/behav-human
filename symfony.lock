@@ -102,6 +102,9 @@
     "monolog/monolog": {
         "version": "1.25.1"
     },
+    "nicolab/php-ftp-client": {
+        "version": "v1.5.1"
+    },
     "nikic/php-parser": {
         "version": "v4.2.4"
     },
