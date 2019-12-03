@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use FtpClient\FtpClient;
-use FtpClient\FtpException;
+use phpseclib\Net\SSH2;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,26 +13,23 @@ class IndexController extends AbstractController {
      * @Route("/")
      */
     public function index(): Response {
-        $ftp = new FtpClient();
-        try {
-            $ftp->connect('imitgw.uhk.cz', false, 59703);
-            $ftp->login('epsi', '2hzcW5FXL2');
-        } catch (FtpException $e) {
-            return new Response('Cannot handle connection to FTP server.', 500);
+        $ssh = new SSH2('hausy.janstepan.eu');
+        if (!$ssh->login('haf', 'datalogger')) {
+            exit('Login Failed');
         }
 
-        $ftp->pasv(true); // Set FTP mode passive, to create data connection from client, not from host
-        $files = $ftp->scanDir('/1/');
+        $stream = $ssh->exec('ls zeman');
+        $files = explode(PHP_EOL, $stream);
         $lastFile = null;
         foreach ($files as $key => $file) {
-            if ($file['type'] === 'file') {
+            if ($file !== '' && strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'csv') {
                 $lastFile = $file;
             }
         }
 
         if ($lastFile) {
-            $name = $lastFile['name'];
-            $csv = $ftp->getContent('/1/' . $name);
+            $name = $lastFile;
+            $csv = $ssh->exec('cat zeman/' . $name);
         } else {
             $name = null;
             $csv = '';

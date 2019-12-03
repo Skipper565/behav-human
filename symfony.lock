@@ -38,9 +38,6 @@
             "src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.3.5"
-    },
     "doctrine/doctrine-migrations-bundle": {
         "version": "1.2",
         "recipe": {
@@ -102,9 +99,6 @@
     "monolog/monolog": {
         "version": "1.25.1"
     },
-    "nicolab/php-ftp-client": {
-        "version": "v1.5.1"
-    },
     "nikic/php-parser": {
         "version": "v4.2.4"
     },
@@ -114,6 +108,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
+    "php": {
+        "version": "7.3"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
     },
@@ -122,6 +119,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.23"
     },
     "psr/cache": {
         "version": "1.0.1"
