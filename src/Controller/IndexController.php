@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use phpseclib\Net\SSH2;
+use App\Connectors\SSHConnector;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,15 +10,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController {
 
     /**
+     * @var SSHConnector
+     */
+    protected $connector;
+
+    /**
+     * @param SSHConnector $connector
+     */
+    public function __construct(SSHConnector $connector) {
+        $this->connector = $connector;
+    }
+
+    /**
      * @Route("/")
      */
     public function index(): Response {
-        $ssh = new SSH2('hausy.janstepan.eu');
-        if (!$ssh->login('haf', 'datalogger')) {
-            exit('Login Failed');
-        }
+        $ssh = $this->connector->getConnection();
+        $folder = $this->getParameter('datalogger.folder');
 
-        $stream = $ssh->exec('ls zeman');
+        $stream = $ssh->exec('ls ' . $folder);
         $files = explode(PHP_EOL, $stream);
         $lastFile = null;
         foreach ($files as $key => $file) {
@@ -29,7 +39,7 @@ class IndexController extends AbstractController {
 
         if ($lastFile) {
             $name = $lastFile;
-            $csv = $ssh->exec('cat zeman/' . $name);
+            $csv = $ssh->exec('cat ' . $folder . '/' . $name);
         } else {
             $name = null;
             $csv = '';
