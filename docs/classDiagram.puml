@@ -1,25 +1,4 @@
 @startuml
-class Stereotype {
-    Integer id
-    Sensor sensor
-    Integer dayOfMonth
-    Integer dayOfWeek
-    Time time
-    Relevance relevance
-}
-
-class Relevance {
-    Integer id
-    String name
-    NotificationType notificationType
-    String notificationValue
-}
-
-class NotificationType {
-    Integer id
-    String name
-}
-
 class Sensor {
     Integer id
     String name
@@ -40,10 +19,41 @@ class SensorStatus {
     String name
 }
 
-Relevance "many" *-- "1" NotificationType
-Stereotype "many" *-- "1" Relevance
-Stereotype "many" *-- "1" Sensor
+class SensorStatusHistory {
+    Integer id
+    Sensor sensor
+    SensorStatus fromStatus
+    SensorStatus toStatus
+    DateTime timestamp
+}
+
+class Stereotype {
+    Integer id
+    SensorStatusHistory sensorStatusChange
+    Integer dayOfMonth
+    Integer dayOfWeek
+    Time time
+    Relevance relevance
+}
+
+class Relevance {
+    Integer id
+    String name
+    NotificationType notificationType
+    String notificationValue
+}
+
+class NotificationType {
+    Integer id
+    String name
+}
+
 Sensor "many" *-- "1" SensorType
 Sensor "many" *-- "1" SensorStatus
 SensorType "many" *-- "many" SensorStatus
+SensorStatusHistory "many" *-- "1" Sensor
+SensorStatusHistory "many" *-- "1" SensorStatus
+Stereotype "many" *-- "1" SensorStatusHistory
+Stereotype "many" *-- "1" Relevance
+Relevance "many" *-- "1" NotificationType
 @enduml
