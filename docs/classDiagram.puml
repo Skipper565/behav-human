@@ -1,0 +1,49 @@
+@startuml
+class Stereotype {
+    Integer id
+    Sensor sensor
+    Integer dayOfMonth
+    Integer dayOfWeek
+    Time time
+    Relevance relevance
+}
+
+class Relevance {
+    Integer id
+    String name
+    NotificationType notificationType
+    String notificationValue
+}
+
+class NotificationType {
+    Integer id
+    String name
+}
+
+class Sensor {
+    Integer id
+    String name
+    SensorType type
+    SensorStatus actualStatus
+    Integer frequency
+    Float threshold
+}
+
+class SensorType {
+    Integer id
+    String name
+    SensorStatus[] possibleStatuses
+}
+
+class SensorStatus {
+    Integer id
+    String name
+}
+
+Relevance "many" *-- "1" NotificationType
+Stereotype "many" *-- "1" Relevance
+Stereotype "many" *-- "1" Sensor
+Sensor "many" *-- "1" SensorType
+Sensor "many" *-- "1" SensorStatus
+SensorType "many" *-- "many" SensorStatus
+@enduml
