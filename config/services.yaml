@@ -30,13 +30,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    connector.ssh_connector:
-        class: App\Connectors\SSHConnector
+    App\Connectors\SSHConnector:
         arguments:
             $host: '%datalogger.host%'
             $username: '%datalogger.username%'
             $password: '%datalogger.password%'
 
     App\Controller\IndexController:
-        arguments:
-            - '@connector.ssh_connector'
+        autowire: true
